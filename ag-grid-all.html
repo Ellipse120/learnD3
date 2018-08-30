@@ -218,7 +218,7 @@
             //suppressCellSelection: true,
             //suppressMultiSort: true,
             // scrollbarWidth: 20,
-            showToolPanel: true,//window.innerWidth > 1000,
+            showToolPanel: false,//window.innerWidth > 1000,
             // toolPanelSuppressColumnFilter: true,
             // toolPanelSuppressColumnSelectAll: true,
             // toolPanelSuppressColumnExpandAll: true,
@@ -586,19 +586,19 @@
                     sortDescending: '<i class="fa fa-sort-amount-desc"/>'
                 }
             },
-            {
-                headerName: '操作',
-                editable: false,
-                width: 150,
-                cellRenderer: operationRender,
-                cellRendererParams: {
-                    tt: '编辑'
-                },
-                cellStyle: {
-                    color: 'darkred',
-                    textAlign: 'center'
-                }
-            }
+            // {
+            //     headerName: '操作',
+            //     editable: false,
+            //     width: 150,
+            //     cellRenderer: operationRender,
+            //     cellRendererParams: {
+            //         tt: '编辑'
+            //     },
+            //     cellStyle: {
+            //         color: 'darkred',
+            //         textAlign: 'center'
+            //     }
+            // }
         ];
 
         function operationRender(params) {
