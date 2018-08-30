@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ag-grid</title>
-<link rel="stylesheet" href="./homepage.css">
+    <link rel="stylesheet" href="./homepage.css">
     <script> var __basePath = ''; </script>
     <style> html, body { margin: 0; padding: 0; height: 100%; } </style>
-    
+    <style>
+        .operation {
+            color: red;
+            line-height: 18px;
+        }
+    </style>    
 </head>
 <body>
    <div>
@@ -24,7 +29,7 @@
     </div>
 </div>
     <span id="messageText"></span>
-    <div id="myGrid" class="ag-theme-balham-dark" style="height: 100%;"></div>
+    <div id="myGrid" class="ag-theme-balham" style="height: 95%;"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -187,7 +192,7 @@
             // suppressTouch: true,
             // suppressDragLeaveHidesColumns: true,
             // suppressMakeColumnVisibleAfterUnGroup: true,
-            // unSortIcon: true,
+            unSortIcon: true,
             // enableRtl: true,
             multiSortKey: 'ctrl',
             animateRows: true,
@@ -201,6 +206,8 @@
             quickFilterText: null,
             groupSelectsChildren: true, // one of [true, false]
             // pagination: true,
+            // paginationPageSize: 10,
+            // paginationAutoPageSize: true,
             // embedFullWidthRows: true,
             // groupSelectsFiltered: true,
             suppressRowClickSelection: true, // if true, clicking rows doesn't select (useful for checkbox selection)
@@ -233,6 +240,9 @@
             //headerCellRenderer: headerCellRenderer_dom,
             onRowSelected: rowSelected, //callback when row selected
             onSelectionChanged: selectionChanged, //callback when selection changed,
+            localeText: {
+                pivotMode: '透视模式'
+            },
             aggFuncs: {
                 'zero': function () {return 0;}
             },
@@ -575,8 +585,26 @@
                     sortAscending: '<i class="fa fa-sort-amount-asc"/>',
                     sortDescending: '<i class="fa fa-sort-amount-desc"/>'
                 }
+            },
+            {
+                headerName: '操作',
+                editable: false,
+                width: 150,
+                cellRenderer: operationRender,
+                cellRendererParams: {
+                    tt: '编辑'
+                },
+                cellStyle: {
+                    color: 'darkred',
+                    textAlign: 'center'
+                }
             }
         ];
+
+        function operationRender(params) {
+            return `<button class="operation" onclick="alert(JSON.stringify(${params.data.totalWinnings}))">${params.tt}</button>`
+        }
+
         //put in the month cols
         var monthGroup = {
             headerName: 'Monthly Breakdown',
@@ -591,7 +619,7 @@
                 // aggFunc: 'sum',
                 //hide: true,
                 cellClassRules: {
-                    'good-score': 'x > 50000',
+                    'good-score': 'typeof x === "number" && x > 50000',
                     'bad-score': 'typeof x === "number" && x < 10000'
                 },
                 valueParser: numberParser, valueFormatter: currencyFormatter,
@@ -1064,7 +1092,7 @@
                 if (params.node.group && params.column.aggFunc === 'count') {
                     return params.value;
                 } else {
-                    return '$' + Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                    return '￥' + Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                 }
             }
         }
